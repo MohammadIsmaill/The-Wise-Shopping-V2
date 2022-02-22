@@ -40,7 +40,7 @@ app.use(session(sessionConfig))
 app.use(flash())
 
 //fix contentSecurityPolicy later
-app.use(helmet({ contentSecurityPolicy: false }))
+// app.use(helmet({ contentSecurityPolicy: false }))
 
 app.use(passport.initialize())
 app.use(passport.session())
