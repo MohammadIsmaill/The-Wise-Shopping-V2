@@ -1,0 +1,36 @@
+
+
+<% layout('layouts/boilerplate')%>
+<h1 class="text-center">Edit Product</h1>
+<form action="/users/<%=usersId%>/shops/<%=shopsId%>/products/<%=product.id%>?_method=PUT" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input value = "<%=product.name%>"type="text" name="product[name]" id="name" class="form-control" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input value="<%=product.price%>" type="text" name="product[price]" id="price" class="form-control" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="image" class="form-label">Upload Images</label>
+        <input class="form-control" type="file" name="image" id="image" multiple>
+    </div>
+    <div class="mb-3">
+        <% product.images.forEach(function(img, i){%>
+            <img src="<%=img.url ? img.url : ''%>" class="img-thumbnail">
+            <div class="form-check-inline">
+                <input type="checkbox" name="deleteImages[]" id="image-<%=i%>" value="<%=img.filename%>">
+            </div>
+            <label for="image-<%=i%>">Delete?</label>
+            <%})%>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Edit Product</button>
+    </div>
+</form>

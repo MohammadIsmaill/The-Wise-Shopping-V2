@@ -1,0 +1,132 @@
+
+
+
+
+
+<% layout('layouts/boilerplate') %>
+          <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2">
+            <div class="col">
+              <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img src="<%=shop.images.length !== 0 ? shop.images[0].url : ''%>" class="img-fluid rounded-start" alt="...">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title"><%=shop.name%></h5>
+                      <lead class="card-title"> <%=shop.location%> </lead>
+                      <p class="card-text"><%=shop.description%></p>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                    
+                  </div>
+                  <% if(currentUser && shop.author.equals(currentUser._id)){ %> 
+                  <div class="col-md-12">
+                    <div class="card-footer">
+                      <form action="/users/<%=user._id%>/shops/<%=shop.id%>?_method=DELETE" method="post">
+                        <a href="/users/<%=user.id%>/shops/<%=shop.id%>/edit" class="btn btn-success ">Edit Shop</a>
+                        <button type="submit" class="btn btn-danger mx-3">Delete Shop</button>
+                      </form>
+                     
+
+                    </div>
+                  </div>
+                  <%}%>
+                </div>
+              </div>
+            </div>
+           
+              <div class="col">
+               <div class="row">
+                 <div class="col">
+                  <div class=" card text-dark bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header bg-primary text-light">Shop Owner</div>
+                    <div class="card-body">
+                      
+                      <h5 class="card-title">
+                        <a class="card-link" href="/users/<%=user.id%>">
+                        <%= user.username %>
+                      </a>
+                        </h5>
+                    </div>
+                  </div>
+                 </div>
+                 <div class="col">
+                  <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header bg-primary text-light">Phone</div>
+                    <div class="card-body">
+                      
+                      <h5 class="card-title"><%=shop.phone%></h5>
+                    </div>
+                  </div>
+                 </div>
+                 </div>
+                
+                 
+                  <div id="map"></div>
+
+              </div>
+             
+              
+    
+              
+          </div>
+       
+          <div>
+              <h1 class="bold">
+                  Products 
+              </h1>
+              <% if(currentUser && shop.author.equals(currentUser._id)){%>
+              <div class="m-2">
+                <a href="/users/<%=user.id%>/shops/<%=shop.id%>/products/new" class="btn btn-primary">Create Product</a>
+
+              </div>
+              <%}%>
+          </div>
+          <%for (let product of shop.products) {%>
+          <div class="card mb-4">
+            <div class="row ">
+             
+              <div class="col-md-4">
+                <img src="<%= product.images.length !== 0 ? product.images[0].url : ''%>" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title"><%=product.name%> - <%=product.price%>$</h5>
+                  <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laboriosam quo dicta architecto beatae eius! Architecto officiis in ex molestiae ut beatae facere soluta? Voluptates nam a ipsa cupiditate mollitia explicabo.</p>
+                  <p class="card-text"><small class="text-muted"><%=product.lastUpdated%></small></p>
+                  <% if(currentUser && shop.author.equals(currentUser._id)){%>
+                    <div class="row w-50">
+                      <div class="col">
+                        <a href="/users/<%=user.id%>/shops/<%=shop.id%>/products/<%=product.id%>/edit" class="btn btn-success">Edit Product</a>
+                      </div>
+                      
+                      <form action="/users/<%=user.id%>/shops/<%=shop.id%>/products/<%=product.id%>?_method=DELETE" class="col" method="post">
+                        <button type="submit"  class="btn btn-danger">Delete Product</button>
+                      </form>
+                    </div>
+                 
+                  <%}%>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <%}%>
+        
+<script>
+    // const mapToken = '< %-process.env.MAPBOX_TOKEN%>'
+    // const shop = < %-JSON.stringify(shop)%>
+    
+</script>
+<script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+
+<script>
+  const mapToken = 'pk.eyJ1IjoiZmludGljaCIsImEiOiJja3JkbTd2cDg1YjA1Mm5xaDBpZWo2Y3loIn0.lAAAEGYxRTEUFcvkSqwv9Q'
+  const shop = {features: <%- JSON.stringify(shop) %>}
+  console.log(shop)
+</script>
+
+<!-- <script src="/scripts/showPageMap.js"></script> -->
+<script src="/scripts/locateShopOnMap.js"></script>

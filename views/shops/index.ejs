@@ -1,0 +1,61 @@
+<% layout('layouts/boilerplate')%>
+
+
+<%if(user.shops.length !== 0){%>
+    <div class="mb-3 text-center">
+        <h1 class="card-title"> Shops Built by <a href="/users/<%=user.id%>" class= "link-primary"><%=user.username%></a></h1>
+        <%if(currentUser && user.equals(currentUser._id)) {%>
+        <a href="/users/<%=user.id%>/shops/new" class="btn btn-primary btn-lg">
+            Build Shop
+        </a>
+        <%}%>
+    </div>
+   
+
+
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <% for(let shop of user.shops){%>
+        <div class="col">
+          <div class="card h-100">
+            <img class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title"><%=shop.name%></h5>
+              <p class="card-text"><%=shop.location%></p>
+             
+            </div>
+            <div class="card-footer text-center">
+               
+                    <div>
+                        <a class="btn btn-success" href="/users/<%=user.id%>/shops/<%=shop.id%>">View shop</a>
+                       
+                    </div>
+           
+               
+                <div class="row mt-3">
+                    <div class="col">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+
+                    </div>
+                
+
+                </div>
+                   
+              
+            </div>
+          </div>
+        </div>
+        <%}%>
+      </div>
+      
+<%}else{%>
+    <div class="text-center">
+        <h1>No shops found</h1>
+        <% if(currentUser && user.equals(currentUser._id)){ %>
+            <a href="/users/<%=user.id%>/shops/new" class="btn btn-primary btn-lg">Build Shop</a> 
+            <%}%>
+    </div>
+    
+
+    <% } %> 
+
