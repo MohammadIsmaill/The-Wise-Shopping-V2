@@ -12,7 +12,7 @@ function sendEmailValidation(email, uniqueString) {
     from: 'mohammad2002ismail@gmail.com',
     to: email,
     subject: 'Email Verification',
-    html: `<a href=http://localhost:3000/verify/${uniqueString}>Verify Email Here </a>`,
+    html: `<a href=http://the-wise-shopping/verify/${uniqueString}>Verify Email Here </a>`,
   }
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) console.error(err)
