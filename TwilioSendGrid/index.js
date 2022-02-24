@@ -32,8 +32,8 @@ function sendEmailValidation(email, uniqueString) {
   const msg = {
     to: email,
     from: 'mohammad2002ismail@gmail.com', // Use the email address or domain you verified above
-    subject: 'Sending with Twilio SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js',
+    subject: 'Email Verification',
+    text: 'Please verify your email here',
     html: `<a href="http://the-wise-shopping.herokuapp.com/verify/${uniqueString}">Verify Email Here </a>`,
   }
   //ES6
