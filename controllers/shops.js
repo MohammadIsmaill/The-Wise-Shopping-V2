@@ -16,19 +16,12 @@ module.exports.renderNewForm = (req, res) => {
 }
 module.exports.createShop = async (req, res) => {
   const { usersId } = req.params
-  // const geoData = await geocoder
-  //   .forwardGeocode({
-  //     query: req.body.shop.location,
-  //     limit: 1,
-  //   })
-  //   .send()
   const geometry = {
     type: 'Point',
     coordinates: [req.body.lng, req.body.lat],
   }
   const shop = new Shop(req.body.shop)
   const user = await User.findById(usersId)
-  // shop.geometry = geoData.body.features[0].geometry
   shop.geometry = geometry
   shop.images = req.files.map((f) => ({ url: f.path, filename: f.filename }))
   shop.author = user._id

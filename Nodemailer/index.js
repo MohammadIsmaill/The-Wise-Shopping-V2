@@ -1,17 +1,20 @@
 const nodemailer = require('nodemailer')
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
+  host: 'smtp-mail.outlook.com',
+  port: 587,
+  secureConnection: false,
+  tls: {
+    ciphers: 'SSLv3',
+  },
   auth: {
-    user: 'mohammad2002ismail@gmail.com',
+    user: 'thewiseshopping@outlook.com',
     pass: 'LHhhs9khMFbZ',
   },
 })
 
 function sendEmailValidation(email, uniqueString) {
   const mailOptions = {
-    from: 'mohammad2002ismail@gmail.com',
+    from: 'The Wise Shopping',
     to: email,
     subject: 'Email Verification',
     html: `<a href=http://the-wise-shopping.herokuapp.com/verify/${uniqueString}>Verify Email Here </a>`,

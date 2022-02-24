@@ -4,38 +4,16 @@ const passport = require('passport')
 const users = require('../controllers/users')
 const catchAsync = require('../utils/catchAsync')
 const User = require('../models/user')
-const {
-  validateProduct,
-  isLoggedIn,
-  isAuthor,
-  isUserFound,
-  isShopFound,
-  isProductFound,
-  verifyEmail,
-} = require('../middleware')
+const { isLoggedIn } = require('../middleware')
 
 router.get('/', (req, res) => {
   res.redirect('/login')
 })
-router.get('/verify/:uniqueString', isLoggedIn, async (req, res) => {
-  const { uniqueString } = req.params
-  // const user = await User.findOne({ uniqueString })
-  const user = await User.findById(req.user.id)
-  if (user.uniqueString === uniqueString) {
-    user.isValid = true
-    await user.save()
-    res.redirect('/products')
-  } else {
-    res.redirect('/verify')
-  }
-})
-router.get('/verify', isLoggedIn, async (req, res) => {
-  const user = await User.findById(req.user.id)
-  if (user.isValid) {
-    return res.redirect('/products')
-  }
-  res.send('Please verify email')
-})
+
+router.get('/verify/:uniqueString', isLoggedIn, catchAsync(users.validateEmail))
+
+router.get('/verify', isLoggedIn, catchAsync(users.showEmailVerification))
+
 router.get('/products', catchAsync(users.home))
 
 router.get('/users/:usersId', users.showProfile)

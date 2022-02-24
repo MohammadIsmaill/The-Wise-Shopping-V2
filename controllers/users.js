@@ -11,6 +11,7 @@ module.exports.showProfile = async (req, res) => {
 }
 module.exports.home = async (req, res) => {
   const { search } = req.query
+  console.log(req.query)
   let products
   if (search) {
     console.log('Searching')
@@ -73,18 +74,26 @@ module.exports.register = async (req, res) => {
     res.redirect('register')
   }
 }
-// module.exports.validateEmail = async(req,res)=>{
-//   const {uniqueString} = req.params;
-//   const user =await User.findOne({uniqueString})
-//   if(user){
-//     user.isValid = true
-//     await user.save()
-//     res.redirect('/products')
+module.exports.validateEmail = async (req, res) => {
+  const { uniqueString } = req.params
+  // const user = await User.findOne({ uniqueString })
+  const user = await User.findById(req.user.id)
+  if (user.uniqueString === uniqueString) {
+    user.isValid = true
+    await user.save()
+    res.redirect('/products')
+  } else {
+    res.redirect('/verify')
+  }
+}
+module.exports.showEmailVerification = async (req, res) => {
+  const user = await User.findById(req.user.id)
+  if (user.isValid) {
+    return res.redirect('/products')
+  }
+  res.send('Please verify email')
+}
 
-//   }else{
-
-//   }
-// }
 module.exports.logout = (req, res) => {
   req.logout()
   res.redirect('/login')
