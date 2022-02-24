@@ -34,7 +34,7 @@ function sendEmailValidation(email, uniqueString) {
     from: 'mohammad2002ismail@gmail.com', // Use the email address or domain you verified above
     subject: 'Sending with Twilio SendGrid is Fun',
     text: 'and easy to do anywhere, even with Node.js',
-    html: `<a href="http://localhost/verify/${uniqueString}">Verify Email Here </a>`,
+    html: `<a href="http://the-wise-shopping.herokuapp.com/verify/${uniqueString}">Verify Email Here </a>`,
   }
   //ES6
   sgMail.send(msg).then(
