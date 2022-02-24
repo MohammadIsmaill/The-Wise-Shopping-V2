@@ -1,6 +1,6 @@
 const User = require('../models/user')
 const Product = require('../models/product')
-const sendEmailValidation = require('../Nodemailer')
+const sendEmailValidation = require('../TwilioSendGrid')
 const { v4: uuidv4 } = require('uuid')
 
 // const sendMail = require('../utils/sendMail')
