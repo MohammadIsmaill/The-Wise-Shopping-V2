@@ -7,20 +7,26 @@
               <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0">
                   <div class="col-md-4">
-                    <img class="img-fluid rounded-start" alt="...">
+                    <img src="<%=user.images.length !== 0 ? user.images[0].url : 'https://res.cloudinary.com/dj7pachn9/image/upload/v1645869740/TheWiseShopping/22_Profile_noblcf.jpg'%> " class="img-fluid rounded-start" alt="...">
                   </div>
                   <div class="col-md-8">
                     <div class="card-body">
-                      <h5 class="card-title"><%=user.username%></h5>
-                      <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, debitis quia. Natus praesentium vel minus provident aut officia? Iste odio non voluptatibus possimus culpa mollitia, nisi recusandae quia ipsa obcaecati.</p>
-                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                    <div class="card-footer">
-                    <a href="/users/<%=user.id%>/shops" class="btn btn-primary">View Shops</a>
+                      <div class="mb-3">
+                        <!-- <h5 class="card-title">< %=user.username%></h5> -->
+                        <h5 class="card-title"><%=user.fullname%></h5>
+                        <h5 class="card-title"></h5>
+                        <em class="card-text"><%=user.about%></em>
+                      </div>
+                      
+                      <a href="/users/<%=user.id%>/edit" class="btn btn-primary">Edit</a>
 
+                      <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
                     </div>
                   </div>
                 </div>
+                <div class="card-footer text-center">
+                  <a href="/users/<%=user.id%>/shops" class="btn btn-primary">View Shops</a>
+                  </div>
               </div>
             </div>
            

@@ -1,23 +1,51 @@
-<!-- <nav aria-label="...">
+
+<!-- javascript throws error because there is no event listener when lis are removed -->
+<% if(totalPaginatedPages != 1){%>
+<div class="container mt-3">
+<nav>
   <ul class="pagination">
+    <%if(page == 1 || !page) {%>
     <li class="page-item disabled">
-      <span class="page-link">Previous</span>
+      <a href="" class="page-link">Previous</a>
     </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active" aria-current="page">
-      <span class="page-link">2</span>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Next</a>
-    </li>
+    <%}else{%>
+      <li class="page-item">
+        <a href="" class="page-link">Previous</a>
+      </li>
+      <%}if(!page || page == 1) {%>
+        <li class="page-item active" id="1">
+          <a href="" class="page-link">1</a>
+        </li>
+        <% }else{%>
+          <li class="page-item" id="1">
+           <a href="" class="page-link">1
+          </a>
+        </li>
+          <% } %> 
+    <% for(let i = 2 ; i <= totalPaginatedPages ; i++) {%>
+      <% if(page == i) {%>
+        <li class="page-item active" id="<%=i%>">
+          <a href="" class="page-link"><%=i%></a>
+        </li>
+        <% }else{%>
+          <li class="page-item" id="<%=i%>">
+           <a href="" class="page-link"><%=i%>
+          </a>
+        </li>
+          <% } %> 
+      <% } %>
+      <%if(page == totalPaginatedPages){%>
+      <li class="page-item disabled">
+        <a href="" class="page-link">Next</a>
+      </li> 
+      <%}else{%>
+        <li class="page-item">
+          <a href="" class="page-link">Next</a>
+        </li> 
+        <% } %> 
   </ul>
 </nav>
+</div>
 
+<%}%>
 
-
-
-<script>
-
-
-</script> -->

@@ -35,6 +35,7 @@ module.exports.productSchema = Joi.object({
   product: Joi.object({
     name: Joi.string().required().escapeHTML(),
     price: Joi.string().required().escapeHTML(),
+    description: Joi.string().required().escapeHTML(),
   }).required(),
   deleteImages: Joi.array(),
 })

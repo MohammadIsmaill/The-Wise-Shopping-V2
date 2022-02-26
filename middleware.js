@@ -32,12 +32,28 @@ module.exports.verifyEmail = async (req, res, next) => {
   }
   next()
 }
-
+module.exports.uniqueEmail = async (req, res, next) => {
+  const { email } = req.body
+  console.log(email)
+  const user = await User.find({ email })
+  if (user.length !== 0) {
+    req.flash('error', 'Someone has used this email')
+    return res.redirect('/register')
+  }
+  next()
+}
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     req.session.returnTo = req.originalUrl
     req.flash('error', 'You must be signed in!')
     return res.redirect('/login')
+  }
+  next()
+}
+module.exports.canRegister = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    req.flash('success', 'Welcome Back')
+    return res.redirect('/products')
   }
   next()
 }

@@ -2,41 +2,82 @@ const User = require('../models/user')
 const Product = require('../models/product')
 const sendEmailValidation = require('../TwilioSendGrid')
 const { v4: uuidv4 } = require('uuid')
+const { shopSchema } = require('../schemas')
+const { cloudinary } = require('../Cloudinary')
 
-// const sendMail = require('../utils/sendMail')
+async function paginateProducts(pageNumber, nPerPage) {
+  await Product.find()
+    .sort({})
+    .skip(pageNumber > 0 ? (pageNumber - 1) * nPerPage : 0)
+    .limit(nPerPage)
+}
+
 module.exports.showProfile = async (req, res) => {
   const { usersId } = req.params
   const user = await User.findById(usersId).populate('shops')
   res.render('users/show', { user })
 }
 module.exports.home = async (req, res) => {
-  const { search } = req.query
-  console.log(req.query)
+  let { search, page } = req.query
+  console.log(page)
+  page = parseInt(page)
+  let totalPaginatedPages
+  let nPerPage = 10
   let products
+  let totalProducts = await Product.find().count()
   if (search) {
-    console.log('Searching')
-    // products = await Product.find({ $text: { $search: search } })
     products = await Product.find({ name: { $regex: '.*' + search + '.*' } })
-      .limit(5)
-      .sort({ lastUpdated: -1 })
+      .sort({ lastUpdatedDateFormat: -1 })
+      .skip(page > 1 ? page * nPerPage : 0)
+      .limit(nPerPage)
       .populate({
         path: 'shop',
         populate: {
           path: 'author',
         },
       })
-  } else {
-    products = await Product.find({})
-      .sort({ lastUpdated: -1 })
-      .populate({
-        path: 'shop',
-        populate: {
-          path: 'author',
-        },
-      })
-  }
 
-  res.render('products/index', { products })
+    totalPaginatedPages = (totalProducts + nPerPage) / nPerPage
+  } else {
+    products = await Product.find()
+      .sort({ lastUpdatedDateFormat: -1 })
+      .skip(page > 1 ? (page - 1) * nPerPage : 0)
+      .limit(nPerPage)
+      .populate({
+        path: 'shop',
+        populate: {
+          path: 'author',
+        },
+      })
+    totalPaginatedPages = ((totalProducts + nPerPage) / nPerPage) | 0
+    // console.log(totalPaginatedPages)
+    console.log(page)
+  }
+  res.render('products/index', { products, page, totalPaginatedPages })
+}
+
+module.exports.renderEditForm = async (req, res) => {
+  const { usersId } = req.params
+  const user = await User.findById(usersId)
+  console.log(user.images)
+  res.render('users/edit', { usersId, user })
+}
+module.exports.editUser = async (req, res) => {
+  const { fullname, about } = req.body
+  const { usersId } = req.params
+  const user = await User.findByIdAndUpdate(usersId, { fullname, about })
+  const imgs = req.files.map((f) => ({ url: f.path, filename: f.filename }))
+  user.images.push(...imgs)
+  await user.save()
+  if (req.body.deleteImages) {
+    for (let filename of req.body.deleteImages) {
+      await cloudinary.uploader.destroy(filename)
+    }
+    await user.updateOne({
+      $pull: { images: { filename: { $in: req.body.deleteImages } } },
+    })
+  }
+  res.redirect(`/users/${usersId}`)
 }
 module.exports.renderLoginForm = (req, res) => {
   res.render('users/login')
@@ -59,10 +100,10 @@ module.exports.showRegisterForm = (req, res) => {
 }
 module.exports.register = async (req, res) => {
   try {
-    const { email, username, password } = req.body
+    const { email, username, password, fullname } = req.body
     const isValid = false
     const uniqueString = uuidv4()
-    const user = new User({ email, username, isValid, uniqueString })
+    const user = new User({ email, username, isValid, uniqueString, fullname })
     const registeredUser = await User.register(user, password)
     sendEmailValidation(email, uniqueString)
     req.login(registeredUser, (err) => {
@@ -76,7 +117,6 @@ module.exports.register = async (req, res) => {
 }
 module.exports.validateEmail = async (req, res) => {
   const { uniqueString } = req.params
-  // const user = await User.findOne({ uniqueString })
   const user = await User.findById(req.user.id)
   if (user.uniqueString === uniqueString) {
     user.isValid = true

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const moment = require('moment')
 const { Schema } = mongoose
 
 const ImageSchema = new Schema({
@@ -15,13 +16,14 @@ const productSchema = new Schema(
     name: String,
     price: String,
     images: [ImageSchema],
+    description: String,
     createdAt: {
-      type: Date,
-      default: Date.now,
+      type: String,
+      default: moment().format('MMMM Do YYYY, h:mm:ss a'),
     },
     lastUpdated: {
-      type: Date,
-      default: Date.now,
+      type: String,
+      default: moment().format('MMMM Do YYYY, h:mm:ss a'),
     },
     shop: {
       type: Schema.Types.ObjectId,
@@ -30,10 +32,10 @@ const productSchema = new Schema(
   },
   opts
 )
-productSchema.index({ name: 'text' })
 
 productSchema.pre('save', (next) => {
-  this.lastUpdated = Date.now()
+  this.lastUpdated = moment().format('MMMM Do YYYY, h:mm:ss a')
+  this.count = this.count + 1
   next()
 })
 module.exports = mongoose.model('Product', productSchema)

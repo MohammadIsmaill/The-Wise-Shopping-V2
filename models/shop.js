@@ -1,11 +1,15 @@
 const mongoose = require('mongoose')
+const moment = require('moment')
 const { Schema } = mongoose
 const Product = require('./product')
-const User = require('./user')
 
 const ImageSchema = new Schema({
-  url: String,
-  filename: String,
+  url: {
+    type: String,
+  },
+  filename: {
+    type: String,
+  },
 })
 ImageSchema.virtual('thumbnail').get(() => {
   return this.url.replace('/upload', '/upload/w_200')
@@ -30,6 +34,7 @@ const shopSchema = new Schema(
       required: [true, 'Description cannot be blank'],
     },
     images: [ImageSchema],
+
     geometry: {
       type: {
         type: String,
@@ -42,10 +47,14 @@ const shopSchema = new Schema(
       },
     },
     createdAt: {
-      type: Date,
-      default: Date.now,
+      type: String,
+      default: moment().format('MMMM Do YYYY, h:mm:ss a'),
     },
     lastUpdated: {
+      type: String,
+      default: moment().format('MMMM Do YYYY, h:mm:ss a'),
+    },
+    lastUpdatedDateFormat: {
       type: Date,
       default: Date.now,
     },
@@ -63,7 +72,8 @@ const shopSchema = new Schema(
   opts
 )
 shopSchema.pre('save', (next) => {
-  this.lastUpdated = Date.now()
+  this.lastUpdated = moment().format('MMMM Do YYYY, h:mm:ss a')
+  this.lastUpdatedDateFormat = Date.now
   next()
 })
 shopSchema.post('findOneAndDelete', async (doc) => {

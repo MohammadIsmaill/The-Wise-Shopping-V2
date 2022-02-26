@@ -9,14 +9,14 @@
               <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0">
                   <div class="col-md-4">
-                    <img src="<%=shop.images.length !== 0 ? shop.images[0].url : ''%>" class="img-fluid rounded-start" alt="...">
+                    <img src="<%=shop.images.length !== 0 ? shop.images[0].url : 'https://res.cloudinary.com/dj7pachn9/image/upload/v1645843320/TheWiseShopping/shop_wj4ll1.jpg' %>" class="img-fluid rounded-start" alt="...">
                   </div>
                   <div class="col-md-8">
                     <div class="card-body">
                       <h5 class="card-title"><%=shop.name%></h5>
                       <lead class="card-title"> <%=shop.location%> </lead>
                       <p class="card-text"><%=shop.description%></p>
-                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                      <p class="card-text">Last updated <small class="text-muted"><%=shop.lastUpdated%></small></p>
                     </div>
                     
                   </div>
@@ -87,14 +87,14 @@
           <div class="card mb-4">
             <div class="row ">
              
-              <div class="col-md-4">
-                <img src="<%= product.images.length !== 0 ? product.images[0].url : ''%>" class="img-fluid rounded-start" alt="...">
+              <div class="col-md-4 text-center">
+                <img src="<%= product.images.length !== 0 ? product.images[0].url : 'https://res.cloudinary.com/dj7pachn9/image/upload/w_200/v1645843793/TheWiseShopping/cart_vri9us.jpg'%>" class="img-fluid rounded-start" alt="...">
               </div>
               <div class="col-md-8">
                 <div class="card-body">
                   <h5 class="card-title"><%=product.name%> - <%=product.price%>$</h5>
-                  <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laboriosam quo dicta architecto beatae eius! Architecto officiis in ex molestiae ut beatae facere soluta? Voluptates nam a ipsa cupiditate mollitia explicabo.</p>
-                  <p class="card-text"><small class="text-muted"><%=product.lastUpdated%></small></p>
+                  <p class="card-text"><%=product.description%></p>
+                  <p class="card-text">Last updated <small class="text-muted"><%=product.lastUpdated%></small></p>
                   <% if(currentUser && shop.author.equals(currentUser._id)){%>
                     <div class="row w-50">
                       <div class="col">
@@ -115,9 +115,9 @@
           </div>
           <%}%>
 
-          <div class="container">
-            <%- include('../partials/pagination') %>
-          </div>
+          <!-- <div class="container">
+            < %- include('../partials/pagination') %>
+          </div> -->
         
 <script>
     // const mapToken = '< %-process.env.MAPBOX_TOKEN%>'
@@ -127,9 +127,28 @@
 <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
 
 <script>
-  const mapToken = 'pk.eyJ1IjoiZmludGljaCIsImEiOiJja3JkbTd2cDg1YjA1Mm5xaDBpZWo2Y3loIn0.lAAAEGYxRTEUFcvkSqwv9Q'
+  const mapToken = '<%-process.env.MAPBOX_TOKEN%>'
   const shop = {features: <%- JSON.stringify(shop) %>}
   console.log(shop)
+
+// try{
+//     for(let i = 0 ; i < 200 ;i++){
+//      await axios.post('http://localhost:3000/users/6217f8740de21282b062d3f9/shops/6217f8ee0de21282b062d40d/products',{
+//       product:{
+//         name:'Product',
+//         price:'2',
+//         description:'best product'
+//       }
+//     })
+//   }
+// }
+// catch(error){
+
+// }
+
+ 
+  
+ 
 </script>
 
 <!-- <script src="/scripts/showPageMap.js"></script> -->

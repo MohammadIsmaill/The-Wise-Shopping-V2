@@ -3,21 +3,29 @@
 <% for(let product of products){%>
 <div class="card mb-3">
     <div class="row ">
-      <div class="col-md-4">
-        <img src="<%=product.images.length !== 0 ? product.images[0].url : ''%>" class="img-fluid rounded-start" alt="...">
+      <div class="col-md-4 text-center">
+        <img src="<%=product.images.length !== 0 ? product.images[0].url : 'https://res.cloudinary.com/dj7pachn9/image/upload/w_200/v1645843793/TheWiseShopping/cart_vri9us.jpg' %>" class="img-fluid rounded-start" alt="...">
       </div>
       <div class="col-md-8">
         <div class="card-body">
           <h5 class="card-title"><%=product.name%>  <span class="text-danger"><%=product.price%>$</span></h5>
           <h5><a href="/users/<%=product.shop.author.id%>/shops/<%=product.shop.id%>" class="card-link"><%=product.shop.name%></a></h5>
-          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          <p class="card-text"><%=product.description%></p>
+          <p class="card-text"><small class="text-muted">Last updated <%=product.lastUpdated %></small></p>
         </div>
       </div>
     </div>
   </div>
   
   <%}%>
-  <div class="container">
+
+  
     <%- include('../partials/pagination') %>
-  </div>
+
+  <script>
+    //global variable for pagination
+    const submitRoute = '/products'
+  </script>
+  <script src="/scripts/pagination.js"></script>
+
+  

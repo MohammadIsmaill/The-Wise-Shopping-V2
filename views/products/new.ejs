@@ -18,9 +18,17 @@
         </div>
     </div>
     <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <input type="text" name="product[description]" id="description" class="form-control" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <div class="mb-3">
         <label for="image" class="form-label">Upload Images</label>
         <input class="form-control" type="file" name="image" id="image" multiple>
     </div>
+    
     <div>
         <button type="submit" class="btn btn-primary">Create Product</button>
     </div>

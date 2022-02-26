@@ -15,7 +15,7 @@
 
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        <% for(let shop of user.shops){%>
+        <% for(let shop of shops){%>
         <div class="col">
           <div class="card h-100">
             <img class="card-img-top">
@@ -25,23 +25,16 @@
              
             </div>
             <div class="card-footer text-center">
-               
                     <div>
                         <a class="btn btn-success" href="/users/<%=user.id%>/shops/<%=shop.id%>">View shop</a>
                        
                     </div>
-           
-               
                 <div class="row mt-3">
                     <div class="col">
-                        <small class="text-muted">Last updated 3 mins ago</small>
+                        <small class="text-muted"><%=shop.lastUpdated%></small>
 
                     </div>
-                
-
                 </div>
-                   
-              
             </div>
           </div>
         </div>
@@ -58,6 +51,13 @@
     
 
     <% } %> 
-    <!-- <div class="container">
-        < %- include('../partials/pagination') %>
-      </div> -->
+        
+        <%- include('../partials/pagination') %>
+      
+      <script>
+        //global variable for pagination
+        const submitRoute = '/users/<%-user.id%>/shops'
+        
+      </script>
+      <script src="/scripts/pagination.js"></script>
+    

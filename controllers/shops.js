@@ -1,13 +1,24 @@
 const User = require('../models/user')
 const Shop = require('../models/shop')
-const mapBoxToken = process.env.MAPBOX_TOKEN
-const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding')
-const geocoder = mbxGeocoding({ accessToken: mapBoxToken })
 
 const { cloudinary } = require('../Cloudinary')
 module.exports.index = async (req, res) => {
+  let { search, page } = req.query
+  page = parseInt(page)
+  let totalPaginatedPages
+  let nPerPage = 10
+  let shops
+  const totalShops = await Shop.find({ author: req.params.usersId }).count()
+
   const user = await User.findById(req.params.usersId).populate('shops')
-  res.render('shops/index', { user })
+  shops = await Shop.find({ author: req.params.usersId })
+    .sort({ lastUpdatedDateFormat: -1 })
+    .skip(page > 1 ? (page - 1) * nPerPage : 0)
+    .limit(nPerPage)
+  console.log(shops)
+
+  totalPaginatedPages = ((totalShops + nPerPage) / nPerPage) | 0
+  res.render('shops/index', { user, shops, page, totalPaginatedPages })
 }
 
 module.exports.renderNewForm = (req, res) => {

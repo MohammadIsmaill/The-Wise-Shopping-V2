@@ -1,4 +1,6 @@
-var mapboxClient = mapboxSdk({ accessToken: mapToken })
+'use strict'
+
+const mapboxClient = mapboxSdk({ accessToken: mapToken })
 
 mapboxgl.accessToken = mapToken
 const map = new mapboxgl.Map({

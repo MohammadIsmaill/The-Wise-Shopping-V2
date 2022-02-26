@@ -1,4 +1,4 @@
-var mapboxClient = mapboxSdk({ accessToken: mapToken })
+const mapboxClient = mapboxSdk({ accessToken: mapToken })
 
 mapboxgl.accessToken = mapToken
 const map = new mapboxgl.Map({
@@ -16,6 +16,11 @@ const locationInput = document.querySelector('#location')
 const lngInput = document.querySelector('.lng')
 const latInput = document.querySelector('.lat')
 
+// const lngLat = document.querySelector('.lngLat')
+const mapInfo = document.querySelector('.mapInfo')
+mapInfo.style.display = 'none'
+// const location = document.querySelector('.location')
+
 const removeChilds = (parent) => {
   while (parent.lastChild) {
     parent.removeChild(parent.lastChild)
@@ -23,10 +28,10 @@ const removeChilds = (parent) => {
 }
 
 const createLocation = (text, type, event) => {
-  const location = document.createElement('li')
-  location.innerHTML = `<a style = "cursor:pointer;" class="location link-secondary">${text} </a>`
-  location.addEventListener(type, event)
-  return location
+  const locationLi = document.createElement('li')
+  locationLi.innerHTML = `<a style = "cursor:pointer;" class="location link-secondary">${text}  </a>`
+  locationLi.addEventListener(type, event)
+  return locationLi
 }
 
 const reverseGeocode = async ({ lng, lat }) => {
@@ -36,6 +41,7 @@ const reverseGeocode = async ({ lng, lat }) => {
     )
     const data = await res.json()
     console.log(data)
+    mapInfo.style.display = 'block'
     for (let feature of data.features) {
       locationExamples.appendChild(
         createLocation(feature.place_name, 'click', () => {
@@ -46,6 +52,8 @@ const reverseGeocode = async ({ lng, lat }) => {
           const { coordinates } = feature.geometry
           lngInput.value = coordinates[0]
           latInput.value = coordinates[1]
+
+          // lngLat.innerHTML = `Lng-Lat: <p class="text-muted">${lngInput.value} ${latInput.value}</p>`
         })
       )
     }
@@ -57,6 +65,7 @@ map.on('click', async (e) => {
   if (marker) marker.remove()
   lngInput.value = e.lngLat.lng
   latInput.value = e.lngLat.lat
+  // lngLat.innerText += `${lngInput.value} ${latInput.value}`
   reverseGeocode(e.lngLat)
   marker = new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map)
 })

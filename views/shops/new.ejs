@@ -19,14 +19,9 @@
             Looks good!
         </div>
     </div>
-    <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input type="text" name="shop[location]" id="location" class="form-control" required>
-        <div class="valid-feedback">
-            Looks good!
-        </div>
-    </div>
-    <div class="input-group">
+
+
+    <div class="input-group d-none">
         <span class="input-group-text">Longitude - Latitude</span>
         <input type="text" name="lng" aria-label="First name" class="lng form-control">
         <input type="text" name="lat"aria-label="Last name" class="lat form-control">
@@ -43,17 +38,27 @@
             Looks good!
         </div>
     </div>
-    <div class="mb-3">
-        <button type="submit" class="btn btn-primary">Build Shop</button>
-    </div>
-    <h3>Location</h3>
-    <!-- <p class="location-text"></p> -->
-    <ul class="location-examples">
 
+    <!-- <p class="location-text"></p> -->
+    
+    <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" name="shop[location]" id="location" class="form-control" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+ 
+
+    <h4 class="mapInfo">Suggested Locations </h3>
+    <ul class="location-examples"> 
     </ul>
+    
     <div class="mb-3">
         <div id="map"></div>
-
+    </div>
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Build Shop</button>
     </div>
 </form>
 

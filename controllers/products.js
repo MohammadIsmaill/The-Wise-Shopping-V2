@@ -12,7 +12,11 @@ module.exports.createProduct = async (req, res) => {
   const product = new Product(req.body.product)
   const shop = await Shop.findById(shopsId)
   product.shop = shop
-  product.images = req.files.map((f) => ({ url: f.path, filename: f.filename }))
+  product.images = req.files.map((f) => ({
+    url: f.path,
+    filename: f.filename,
+  }))
+
   shop.products.push(product)
   await product.save()
   await shop.save()
