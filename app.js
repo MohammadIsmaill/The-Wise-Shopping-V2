@@ -23,57 +23,50 @@ const sessionConfig = require('./config/session')
 const mongoSanitize = require('express-mongo-sanitize')
 // const cors = require('cors')
 connectMongo()
-if (cluster.isMaster) {
-  const numberCPUs = cpus().length
-  for (let i = 0; i < numberCPUs; i++) {
-    cluster.fork()
-  }
-} else {
-  app.engine('ejs', ejsMate)
-  app.set('view engine', 'ejs')
-  app.set('views', path.join(__dirname, 'views'))
+app.engine('ejs', ejsMate)
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
 
-  app.use(express.urlencoded({ extended: true }))
-  // app.use(fileUpload())
-  app.use(methodOverride('_method'))
-  app.use(express.static(path.join(__dirname, 'public')))
-  app.use(
-    mongoSanitize({
-      replaceWith: '_',
-    })
-  )
-  //comment s8eere bas la ya3mel commit
-  app.use(session(sessionConfig))
-  app.use(flash())
-
-  //fix contentSecurityPolicy later
-  // app.use(helmet({ contentSecurityPolicy: false }))
-
-  app.use(passport.initialize())
-  app.use(passport.session())
-
-  passport.use(new LocalStrategy(User.authenticate()))
-  passport.serializeUser(User.serializeUser())
-  passport.deserializeUser(User.deserializeUser())
-
-  app.use((req, res, next) => {
-    // console.log(req.session)
-    res.locals.currentUser = req.user
-    res.locals.success = req.flash('success')
-    res.locals.error = req.flash('error')
-    next()
+app.use(express.urlencoded({ extended: true }))
+// app.use(fileUpload())
+app.use(methodOverride('_method'))
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(
+  mongoSanitize({
+    replaceWith: '_',
   })
-  app.use('/', userRoutes)
-  app.use('/users/:usersId/shops', shopRoutes)
-  app.use('/users/:usersId/shops/:shopsId/products', productRoutes)
+)
+//comment s8eere bas la ya3mel commit
+app.use(session(sessionConfig))
+app.use(flash())
 
-  app.all('*', (req, res, next) => {
-    next(new ExpressError('Page not found', 404))
-  })
+//fix contentSecurityPolicy later
+// app.use(helmet({ contentSecurityPolicy: false }))
 
-  app.use((err, req, res, next) => {
-    const { statusCode = 500, message = 'Oh No, something went wrong' } = err
-    res.status(statusCode).render('error', { err })
-  })
-  app.listen(process.env.PORT || 3000)
-}
+app.use(passport.initialize())
+app.use(passport.session())
+
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
+app.use((req, res, next) => {
+  // console.log(req.session)
+  res.locals.currentUser = req.user
+  res.locals.success = req.flash('success')
+  res.locals.error = req.flash('error')
+  next()
+})
+app.use('/', userRoutes)
+app.use('/users/:usersId/shops', shopRoutes)
+app.use('/users/:usersId/shops/:shopsId/products', productRoutes)
+
+app.all('*', (req, res, next) => {
+  next(new ExpressError('Page not found', 404))
+})
+
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message = 'Oh No, something went wrong' } = err
+  res.status(statusCode).render('error', { err })
+})
+app.listen(process.env.PORT || 3000)
