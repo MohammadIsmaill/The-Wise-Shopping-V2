@@ -36,6 +36,7 @@ module.exports.uniqueEmail = async (req, res, next) => {
   const { email } = req.body
   console.log(email)
   const user = await User.find({ email })
+  console.log(user)
   if (user.length !== 0) {
     req.flash('error', 'Someone has used this email')
     return res.redirect('/register')

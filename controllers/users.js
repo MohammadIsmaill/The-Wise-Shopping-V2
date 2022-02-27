@@ -28,7 +28,7 @@ module.exports.home = async (req, res) => {
   if (search) {
     products = await Product.find({ name: { $regex: '.*' + search + '.*' } })
       .sort({ lastUpdatedDateFormat: -1 })
-      .skip(page > 1 ? page * nPerPage : 0)
+      .skip(page > 1 ? (page - 1) * nPerPage : 0)
       .limit(nPerPage)
       .populate({
         path: 'shop',
@@ -37,7 +37,7 @@ module.exports.home = async (req, res) => {
         },
       })
 
-    totalPaginatedPages = (totalProducts + nPerPage) / nPerPage
+    totalPaginatedPages = (totalProducts + nPerPage - 1) / nPerPage
   } else {
     products = await Product.find()
       .sort({ lastUpdatedDateFormat: -1 })
@@ -49,7 +49,7 @@ module.exports.home = async (req, res) => {
           path: 'author',
         },
       })
-    totalPaginatedPages = ((totalProducts + nPerPage) / nPerPage) | 0
+    totalPaginatedPages = ((totalProducts + nPerPage - 1) / nPerPage) | 0
     // console.log(totalPaginatedPages)
     console.log(page)
   }

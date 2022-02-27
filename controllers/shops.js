@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const Shop = require('../models/shop')
+const Product = require('../models/product')
 
 const { cloudinary } = require('../Cloudinary')
 module.exports.index = async (req, res) => {
@@ -47,7 +48,21 @@ module.exports.showShop = async (req, res) => {
   const { shopsId, usersId } = req.params
   const shop = await Shop.findById(shopsId).populate('products')
   const user = await User.findById(usersId)
-  res.render('shops/show', { shop, user })
+
+  let { page } = req.query
+  page = parseInt(page)
+  let totalPaginatedPages
+  let nPerPage = 10
+  let products = await Product.find({ author: user, shop })
+    .skip(page > 1 ? (page - 1) * nPerPage : 0)
+    .limit(nPerPage)
+    .sort({ lastUpdatedDateFormat: -1 })
+  let totalProducts = await Product.find({ author: user, shop }).count()
+
+  console.log(products)
+  totalPaginatedPages = ((totalProducts + nPerPage - 1) / nPerPage) | 0
+
+  res.render('shops/show', { shop, user, page, totalPaginatedPages, products })
 }
 
 module.exports.renderEditForm = async (req, res) => {
