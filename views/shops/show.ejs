@@ -115,41 +115,23 @@
           </div>
           <%}%>
 
-          <!-- <div class="container">
-            < %- include('../partials/pagination') %>
-          </div> -->
+          
+            <%- include('../partials/pagination') %>
+          
         
-<script>
-    // const mapToken = '< %-process.env.MAPBOX_TOKEN%>'
-    // const shop = < %-JSON.stringify(shop)%>
-    
-</script>
+
 <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
 
 <script>
+
+  //Global Variables
+   
   const mapToken = '<%-process.env.MAPBOX_TOKEN%>'
   const shop = {features: <%- JSON.stringify(shop) %>}
-  console.log(shop)
 
-// try{
-//     for(let i = 0 ; i < 200 ;i++){
-//      await axios.post('http://localhost:3000/users/6217f8740de21282b062d3f9/shops/6217f8ee0de21282b062d40d/products',{
-//       product:{
-//         name:'Product',
-//         price:'2',
-//         description:'best product'
-//       }
-//     })
-//   }
-// }
-// catch(error){
-
-// }
-
- 
+  const submitRoute = '/users/<%-user.id%>/shops/<%-shop.id%>'
   
- 
 </script>
 
-<!-- <script src="/scripts/showPageMap.js"></script> -->
+<script src="/scripts/pagination.js"></script>
 <script src="/scripts/locateShopOnMap.js"></script>
