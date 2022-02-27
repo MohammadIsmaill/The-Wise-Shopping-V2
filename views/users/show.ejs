@@ -17,9 +17,9 @@
                         <h5 class="card-title"></h5>
                         <em class="card-text"><%=user.about%></em>
                       </div>
-                      
+                      <% if(currentUser && user.equals(currentUser)){%>
                       <a href="/users/<%=user.id%>/edit" class="btn btn-primary">Edit</a>
-
+                        <% } %> 
                       <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
                     </div>
                   </div>
