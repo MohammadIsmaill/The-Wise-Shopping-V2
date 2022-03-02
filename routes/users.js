@@ -16,7 +16,7 @@ const {
 } = require('../middleware')
 
 router.get('/', (req, res) => {
-  res.redirect('/login')
+  res.redirect('/products')
 })
 
 router.get('/verify/:uniqueString', isLoggedIn, catchAsync(users.validateEmail))
