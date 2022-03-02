@@ -40,9 +40,9 @@ module.exports.home = async (req, res) => {
     totalPaginatedPages = (totalProducts + nPerPage - 1) / nPerPage
   } else {
     products = await Product.find()
-      .sort({ lastUpdatedDateFormat: -1 })
       .skip(page > 1 ? (page - 1) * nPerPage : 0)
       .limit(nPerPage)
+      .sort({ lastUpdatedDateFormat: -1 })
       .populate({
         path: 'shop',
         populate: {

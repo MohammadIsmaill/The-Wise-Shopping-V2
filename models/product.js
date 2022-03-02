@@ -21,6 +21,10 @@ const productSchema = new Schema(
       type: String,
       default: moment().format('MMMM Do YYYY, h:mm:ss a'),
     },
+    lastUpdatedDateFormat: {
+      type: Date,
+      default: Date.now,
+    },
     lastUpdated: {
       type: String,
       default: moment().format('MMMM Do YYYY, h:mm:ss a'),
@@ -35,7 +39,7 @@ const productSchema = new Schema(
 
 productSchema.pre('save', (next) => {
   this.lastUpdated = moment().format('MMMM Do YYYY, h:mm:ss a')
-  this.count = this.count + 1
+  this.lastUpdatedDateFormat = Date.now
   next()
 })
 module.exports = mongoose.model('Product', productSchema)

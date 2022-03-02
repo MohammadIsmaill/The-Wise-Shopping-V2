@@ -1,8 +1,6 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-const cluster = require('cluster')
-const { cpus } = require('os')
 
 const express = require('express')
 const app = express()
