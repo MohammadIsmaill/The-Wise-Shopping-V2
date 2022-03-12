@@ -1,7 +1,6 @@
 'use strict'
 
 let lis = document.querySelectorAll('li.page-item')
-console.dir('hello')
 const nextLi = lis[lis.length - 1]
 const prevLi = lis[0]
 
